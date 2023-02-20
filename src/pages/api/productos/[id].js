@@ -13,8 +13,13 @@ export default async function handler(req, res) {
 const getProducto = async (req, res) => {
     try {
         const { id } = req.query;
-        const [result] = await pool.query("SELECT * FROM producto WHERE idProducto = ?", [id,]);
-        return res.status(200).json(result[0]);
+        const [producto] = await pool.query("SELECT * FROM producto WHERE codigo = ?", [id,]);
+
+        console.log(producto);
+        if (producto.length === 0) {
+            return res.status(404).json("El producto no existe");
+        }
+        return res.status(200).json(producto[0]);
     } catch (error) {
         return res.status(500).json({
             message: error.message,

@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
 const getEntradas = async (req, res) => {
     try {
-        const [result] = await pool.query("select e.numeroDocumento, e.fechaRegistro, e.usuarioRegistro, e.documentoProveedor,e.nombreProveedor,e.montoTotal, de.codigoProducto,de.descripcionProducto,de.categoriaProducto, de.precioVenta, de.precioVenta,de.cantidad,de.subTotal from Entrada e inner join DETALLEENTRADA de on e.idEntrada = de.idEntrada");
+        const [result] = await pool.query("select e.numeroDocumento, e.fechaRegistro, e.usuarioRegistro, e.documentoProveedor,e.nombreProveedor,e.montoTotal, de.codigoProducto,de.descripcionProducto,de.categoriaProducto, de.precioCompra, de.precioVenta,de.cantidad,de.subTotal from Entrada e inner join DETALLEENTRADA de on e.idEntrada = de.idEntrada");
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({ error });

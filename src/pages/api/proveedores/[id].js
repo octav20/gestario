@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 const getProveedor = async (req, res) => {
     try {
         const { id } = req.query;
-        const [result] = await pool.query("SELECT * FROM Proveedor WHERE idProveedor = ?", [id]);
+        const [result] = await pool.query("SELECT * FROM Proveedor WHERE numeroDocumento = ?", [id]);
         return res.status(200).json(result[0]);
     } catch (error) {
         return res.status(500).json({

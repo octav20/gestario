@@ -13,7 +13,7 @@ const getSalida = async (req, res) => {
         const idSalida = result[0].idSalida;
         console.log(idSalida);
         const [lista] = await pool.query("SELECT * FROM DetalleSalida WHERE idSalida =?", [idSalida]);
-        return res.status(200).json({ salida: result[0], lista });
+        return res.status(200).json({ info: result[0], lista });
     } catch (error) {
         return res.status(500).json({
             message: error.message,
