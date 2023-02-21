@@ -47,7 +47,7 @@ function BuscarEntradasForm() {
         }
     }
     return (
-        <>
+        <div className='ml-60'>
             <div className="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                 <form className="space-y-6" action="#" onSubmit={handleSubmit}>
                     <h5 className="text-xl font-medium text-gray-900 dark:text-white">Buscar Entrada</h5>
@@ -111,7 +111,7 @@ function BuscarEntradasForm() {
                     {/* Usa parentesis en lugar de corchetes */}
                 </table>
             </div>
-        </>
+        </div>
     )
 }
 

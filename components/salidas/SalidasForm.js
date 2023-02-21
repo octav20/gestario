@@ -1,4 +1,5 @@
 import axios from "axios";
+import AsideBar from "components/AsideBar.js";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import RegistrarSalidasList from "./RegistrarSalidasList.js";
@@ -108,7 +109,7 @@ function SalidasForm() {
     }
     return (
 
-        <>
+        <div className="ml-60">
             <div className="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                 <form className="space-y-6" action="#" onSubmit={handleSubmit}>
                     <h5 className="text-xl font-medium text-gray-900 dark:text-white">Registrar Salida</h5>
@@ -131,7 +132,7 @@ function SalidasForm() {
                 <hr className="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700" />
 
                 <form className="space-y-6" action="#" onSubmit={agregarProducto}>
-                    <div className="flex justify-around ">
+                    <div className="flex justify-around space-x-6 ">
                         <div>
                             <label htmlFor="codigoProducto" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Codigo Producto</label>
                             <input type="number" name="codigoProducto" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required onChange={handleChangeProducto}
@@ -187,7 +188,8 @@ function SalidasForm() {
                     {/* Usa parentesis en lugar de corchetes */}
                 </table>
             </div>
-        </>
+        </div>
+
 
 
     )
