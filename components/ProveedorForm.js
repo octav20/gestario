@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-function ProveedorForm() {
+function ProveedorForm({ proveedores }) {
     const [proveedor, setProveedor] = useState({
         numeroDocumento: '',
         nombreCompleto: ""
@@ -18,6 +18,8 @@ function ProveedorForm() {
         e.preventDefault();
         try {
             await axios.post("/api/proveedores/", proveedor);
+            proveedores.push(proveedor);
+            console.log(proveedores);
             alert("Proveedor Agregado");
         }
         catch (error) {

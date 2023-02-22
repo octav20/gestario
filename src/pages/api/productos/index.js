@@ -20,7 +20,10 @@ const getProductos = async (req, res) => {
 const saveProductos = async (req, res) => {
     try {
         const { codigo, descripcion, categoria } = req.body;
-
+        const [producto] = await pool.query("SELECT * from producto WHERE codigo = ?", [codigo]);
+        if (producto.length > 0) {
+            return res.status(401).json("Este producto ya fue registrado");
+        }
         const [result] = await pool.query("Insert into producto SET ?", {
             codigo,
             descripcion,

@@ -20,6 +20,10 @@ const getProveedores = async (req, res) => {
 const saveProveedores = async (req, res) => {
     try {
         const { numeroDocumento, nombreCompleto } = req.body;
+        const [proveedor] = await pool.query("SELECT * FROM proveedor WHERE numeroDocumento = ?", [numeroDocumento]);
+        if (proveedor.length > 0) {
+            return res.status(401).json("Este proveedor ya fue registrado");
+        }
 
         const [result] = await pool.query("Insert into Proveedor SET ?", {
             numeroDocumento,
