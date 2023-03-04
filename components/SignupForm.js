@@ -20,7 +20,7 @@ function SignupForm() {
         try {
             await axios.post("/api/signup/", usuario);
             alert("Usuario registrado correctamente");
-            router.push("/login");
+            router.push("/");
         }
         catch (error) {
             console.log(error);
