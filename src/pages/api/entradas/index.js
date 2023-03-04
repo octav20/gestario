@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
 const getEntradas = async (req, res) => {
     try {
-        const [result] = await pool.query("select e.numeroDocumento, e.fechaRegistro, e.usuarioRegistro, e.documentoProveedor,e.nombreProveedor,e.montoTotal, de.codigoProducto,de.descripcionProducto,de.categoriaProducto, de.precioCompra, de.precioVenta,de.cantidad,de.subTotal from Entrada e inner join DETALLEENTRADA de on e.idEntrada = de.idEntrada");
+        const [result] = await pool.query("select e.numeroDocumento, e.fechaRegistro, e.usuarioRegistro, e.documentoProveedor,e.nombreProveedor,e.montoTotal, de.codigoProducto,de.descripcionProducto,de.categoriaProducto, de.precioCompra, de.precioVenta,de.cantidad,de.subTotal from entrada e inner join detalleentrada de on e.idEntrada = de.idEntrada");
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({ error });
@@ -23,7 +23,7 @@ const saveEntradas = async (req, res) => {
             usuarioRegistro, documentoProveedor, nombreProveedor, cantidadProductos, montoTotal, listaDetalle
         } = req.body;
 
-        const [result] = await pool.query("Insert into Entrada SET ?", {
+        const [result] = await pool.query("Insert into entrada SET ?", {
             numeroDocumento, fechaRegistro, usuarioRegistro, documentoProveedor, nombreProveedor, cantidadProductos, montoTotal
         });
         const idEntrada = result.insertId;
@@ -31,15 +31,15 @@ const saveEntradas = async (req, res) => {
         listaDetalle.forEach(async (
             { idProducto, codigoProducto, descripcionProducto, categoriaProducto, precioCompra, precioVenta, cantidad, subTotal
             }) => {
-            await pool.query("Insert into DetalleEntrada set ?", {
+            await pool.query("Insert into detalleentrada set ?", {
                 idEntrada, idProducto, codigoProducto, descripcionProducto, categoriaProducto, precioCompra, precioVenta, cantidad, subTotal
             })
-            const [producto] = await pool.query("Select * from Producto where idProducto =?", [idProducto]);
+            const [producto] = await pool.query("Select * from producto where idProducto =?", [idProducto]);
             let stock = parseInt(producto[0].stock);
             console.log(stock);
             stock += parseInt(cantidad);
             console.log(result);
-            await pool.query("UPDATE PRODUCTO set precioCompra = ?, precioVenta = ?, stock = ? where idProducto = ? ", [precioCompra, precioVenta, stock, idProducto]);
+            await pool.query("UPDATE producto set precioCompra = ?, precioVenta = ?, stock = ? where idProducto = ? ", [precioCompra, precioVenta, stock, idProducto]);
 
         })
         console.log(result);

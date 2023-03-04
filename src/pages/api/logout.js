@@ -11,13 +11,13 @@ export default async function handler(req, res) {
 const logoutUsuario = async (req, res) => {
     const { token } = req.cookies;
     if (!token) {
-       return res.status(401).json({ message: "No hay token" });
-        
+        return res.status(401).json({ message: "No hay token" });
+
     }
     try {
-        
+
         verify(token, "secret");
-        
+
         const serializedToken = serialize("token", null, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",

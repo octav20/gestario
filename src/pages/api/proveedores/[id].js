@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 const getProveedor = async (req, res) => {
     try {
         const { id } = req.query;
-        const [result] = await pool.query("SELECT * FROM Proveedor WHERE numeroDocumento = ?", [id]);
+        const [result] = await pool.query("SELECT * FROM proveedor WHERE numeroDocumento = ?", [id]);
         return res.status(200).json(result[0]);
     } catch (error) {
         return res.status(500).json({
@@ -25,7 +25,7 @@ const getProveedor = async (req, res) => {
 const deleteProveedor = async (req, res) => {
     try {
         const { id } = req.query;
-        const result = await pool.query("DELETE FROM Proveedor WHERE idProveedor =?", [id]);
+        const result = await pool.query("DELETE FROM proveedor WHERE idProveedor =?", [id]);
         return res.status(204).json();
     } catch (error) {
         return res.status(500).json({
@@ -40,7 +40,7 @@ const updateProveedor = async (req, res) => {
         const { numeroDocumento, nombreCompleto } = req.body;
 
         await pool.query(
-            "UPDATE Proveedor SET numeroDocumento = ?, nombreCompleto = ? WHERE idProveedor =?",
+            "UPDATE proveedor SET numeroDocumento = ?, nombreCompleto = ? WHERE idProveedor =?",
             [numeroDocumento, nombreCompleto, id]
         );
         return res.status(204).json();

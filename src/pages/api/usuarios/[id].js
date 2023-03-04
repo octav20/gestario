@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 const getUsuario = async (req, res) => {
     try {
         const { id } = req.query;
-        const [result] = await pool.query("SELECT * FROM Usuario WHERE idUsuario = ?", [id]);
+        const [result] = await pool.query("SELECT * FROM usuario WHERE idUsuario = ?", [id]);
         return res.status(200).json(result[0]);
     } catch (error) {
         return res.status(500).json({
@@ -25,7 +25,7 @@ const getUsuario = async (req, res) => {
 const deleteUsuario = async (req, res) => {
     try {
         const { id } = req.query;
-        const result = await pool.query("DELETE FROM Usuario WHERE idUsuario =?", [id]);
+        const result = await pool.query("DELETE FROM usuario WHERE idUsuario =?", [id]);
         return res.status(204).json();
     } catch (error) {
         return res.status(500).json({
@@ -40,7 +40,7 @@ const updateUsuario = async (req, res) => {
         const { nombreCompleto, nombreUsuario, clave } = req.body;
 
         await pool.query(
-            "UPDATE Usuario SET nombreCompleto = ?, nombreCompleto = ?, clave = ? WHERE idUsuario =?",
+            "UPDATE usuario SET nombreCompleto = ?, nombreCompleto = ?, clave = ? WHERE idUsuario =?",
             [nombreCompleto, nombreUsuario, clave, id]
         );
         return res.status(204).json();

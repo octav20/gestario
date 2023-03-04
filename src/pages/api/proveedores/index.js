@@ -10,7 +10,7 @@ export default async function handler(req, res) {
 
 const getProveedores = async (req, res) => {
     try {
-        const [result] = await pool.query("SELECT * from Proveedor");
+        const [result] = await pool.query("SELECT * from proveedor");
         return res.status(200).json(result);
     } catch (error) {
         return res.status(500).json({ error });
@@ -25,7 +25,7 @@ const saveProveedores = async (req, res) => {
             return res.status(401).json("Este proveedor ya fue registrado");
         }
 
-        const [result] = await pool.query("Insert into Proveedor SET ?", {
+        const [result] = await pool.query("Insert into proveedor SET ?", {
             numeroDocumento,
             nombreCompleto,
 
