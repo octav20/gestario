@@ -9,7 +9,7 @@ function Proveedores({ data }) {
     return (
         <Layout>
             <div className='flex flex-row justify-between '>
-                <ProveedorForm proveedores={proveedores}></ProveedorForm>
+                <ProveedorForm proveedores={proveedores} />
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-1">
                     <table className="w-min text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -33,10 +33,11 @@ function Proveedores({ data }) {
     )
 }
 export const getServerSideProps = async (context) => {
+    const reqUrl = context.req.headers["referer"]
+    const url = new URL(reqUrl);
     const { data } = await axios.get(
-        `http://localhost:3000/api/proveedores`
+        `${url.origin}/api/proveedores`
     );
-
     return {
         props: {
             data

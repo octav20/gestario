@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react'
@@ -107,7 +108,8 @@ function AsideBar({ estilo }) {
             <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidebar">
                 <div className="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
                     <Link href="/menu" className="flex items-center pl-2.5 mb-5">
-                        <img src="https://flowbite.com/docs/images/logo.svg" className="h-6 mr-3 sm:h-7" alt="Flowbite Logo" />
+                        <Image src={"/image.png"} className=" mr-3 " alt="" width={40} height={40}></Image>
+
                         <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Gestario</span>
                     </Link>
                     <ul className="space-y-2">

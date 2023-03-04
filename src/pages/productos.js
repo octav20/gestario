@@ -7,7 +7,7 @@ function productos({ productos }) {
   return (
     <Layout>
       <div className='flex flex-row justify-between '>
-        <ProductoForm></ProductoForm>
+        <ProductoForm />
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-1">
           <table className="w-min text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -43,8 +43,10 @@ function productos({ productos }) {
   )
 }
 export const getServerSideProps = async (context) => {
+  const reqUrl = context.req.headers["referer"]
+  const url = new URL(reqUrl);
   const { data: productos } = await axios.get(
-    `http://localhost:3000/api/productos`
+    `${url.origin}/api/productos`
   );
 
   return {
