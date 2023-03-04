@@ -17,7 +17,7 @@ const registrarUsuario = async (req, res) => {
             return res.status(401).json("Este nombre de usuario ya esta registrado");
         }
 
-        const [result] = await pool.query("Insert into Usuario SET ?", {
+        const [result] = await pool.query("Insert into usuario SET ?", {
             nombreCompleto,
             nombreUsuario,
             clave
