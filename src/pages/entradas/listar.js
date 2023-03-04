@@ -63,10 +63,11 @@ export default function HomePage({ entradas }) {
 }
 
 export const getServerSideProps = async (context) => {
+    const reqUrl = context.req.headers["referer"]
+    const url = new URL(reqUrl);
     const { data: entradas } = await axios.get(
-        `http://localhost:3000/api/entradas`
+        `${url.origin}/api/entradas`
     );
-
     return {
         props: {
             entradas,

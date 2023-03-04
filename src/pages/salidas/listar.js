@@ -10,7 +10,7 @@ export default function HomePage({ salidas }) {
             <div className="ml-60">
                 <div className="p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
                     <h5 className="text-xl font-medium text-gray-900 dark:text-white">Lista de Salidas</h5>
-                
+
                 </div>
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-1">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -57,10 +57,11 @@ export default function HomePage({ salidas }) {
 }
 
 export const getServerSideProps = async (context) => {
+    const reqUrl = context.req.headers["referer"]
+    const url = new URL(reqUrl);
     const { data: salidas } = await axios.get(
-        `http://localhost:3000/api/salidas`
+        `${url.origin}/api/salidas`
     );
-
     return {
         props: {
             salidas,
