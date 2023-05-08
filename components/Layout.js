@@ -10,10 +10,10 @@ export default function Layout({ children }) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const sidebar = () => {
     if (router.route === "/menu" || router.route === "/" || router.route === "/signup") { setSideBar(false); } else { setSideBar(true); }
-  }
+  };
   useEffect(() => {
-    sidebar()
-  }, [sidebar])
+    sidebar();
+  }, [sidebar]);
 
   return (
     <>

@@ -1,12 +1,12 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-function ProductoForm() {
+function ProductoForm({ handleSubmitProducto }) {
     const [producto, setProducto] = useState({
         codigo: '',
         descripcion: "",
         categoria: ""
-    })
+    });
     const router = useRouter();
     const handleChange = ({ target: { name, value } }) => {
         setProducto({
@@ -19,9 +19,12 @@ function ProductoForm() {
         e.preventDefault();
         try {
             await axios.post("/api/productos/", producto);
+            handleSubmitProducto(producto);
+
             alert("Producto Agregado");
         }
         catch (error) {
+            alert(error.response.data);
             console.log(error);
         }
     };
@@ -53,7 +56,7 @@ function ProductoForm() {
 
 
 
-    )
+    );
 }
 
-export default ProductoForm
+export default ProductoForm;

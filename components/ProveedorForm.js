@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-function ProveedorForm({ proveedores }) {
+function ProveedorForm({ proveedores, handleSubmitProveedor }) {
     const [proveedor, setProveedor] = useState({
         numeroDocumento: '',
         nombreCompleto: ""
-    })
+    });
     const router = useRouter();
     const handleChange = ({ target: { name, value } }) => {
         setProveedor({
@@ -19,9 +19,11 @@ function ProveedorForm({ proveedores }) {
         try {
             await axios.post("/api/proveedores/", proveedor);
             proveedores.push(proveedor);
+            handleSubmitProveedor(proveedor);
             alert("Proveedor Agregado");
         }
         catch (error) {
+            alert(error.response.data);
             console.log(error);
         }
     };
@@ -47,7 +49,7 @@ function ProveedorForm({ proveedores }) {
         </div>
 
 
-    )
+    );
 }
 
-export default ProveedorForm
+export default ProveedorForm;

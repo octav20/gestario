@@ -2,19 +2,22 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import RegistrarEntradasList from "./RegistrarEntradasList.js";
-function EntradasForm() {
+import OptionProveedores from "./OptionProveedores.js";
+function EntradasForm({ data }) {
+
+    const [proveedores, setProveedores] = useState(data);
     const [entrada, setEntrada] = useState({
         numeroDocumento: "", fechaRegistro: "",
         usuarioRegistro: "", documentoProveedor: "",
         nombreProveedor: "", cantidadProductos: "",
         montoTotal: "", listaDetalle: []
-    })
+    });
     const [producto, setProducto] = useState({
         idProducto: 0, codigoProducto: "",
         descripcionProducto: "", categoriaProducto: "",
         precioCompra: "", precioVenta: "",
         cantidad: 0, subTotal: ""
-    })
+    });
     const router = useRouter();
     const handleChange = ({ target: { name, value } }) => {
         setEntrada({
@@ -48,7 +51,7 @@ function EntradasForm() {
                 usuarioRegistro: "", documentoProveedor: "",
                 nombreProveedor: "", cantidadProductos: "",
                 montoTotal: "", listaDetalle: []
-            })
+            });
         }
         catch (error) {
             console.log(error);
@@ -66,14 +69,14 @@ function EntradasForm() {
                     descripcionProducto: "", categoriaProducto: "",
                     precioCompra: "", precioVenta: "",
                     cantidad: 0, subTotal: ""
-                })
-                return alert("Este producto ya ha sido agregado")
+                });
+                return alert("Este producto ya ha sido agregado");
             }
             if (producto.descripcionProducto === "") {
-                return alert("Debes buscar el producto")
+                return alert("Debes buscar el producto");
             }
             if (producto.cantidad <= 0) {
-                return alert("Debe ingresar una cantidad valida")
+                return alert("Debe ingresar una cantidad valida");
             }
             producto.subTotal = producto.cantidad * parseFloat(producto.precioCompra);
             entrada.listaDetalle.push(producto);
@@ -82,18 +85,18 @@ function EntradasForm() {
                 descripcionProducto: "", categoriaProducto: "",
                 precioCompra: "", precioVenta: "",
                 cantidad: 0, subTotal: ""
-            })
+            });
 
         } catch (error) {
             console.log(error);
 
         }
-    }
+    };
     const buscarProducto = async (e) => {
         e.preventDefault();
         try {
             if (producto.codigoProducto === "") {
-                return alert("Debes buscar ingresar el codigo del producto")
+                return alert("Debes buscar ingresar el codigo del producto");
             }
             const { data } = await axios.get("/api/productos/" + producto.codigoProducto);
 
@@ -110,34 +113,11 @@ function EntradasForm() {
             );
 
         } catch (error) {
-            alert("Producto no encontrado")
+            alert("Producto no encontrado");
             console.log(error);
 
         }
-    }
-    const buscarProveedor = async (e) => {
-        e.preventDefault();
-        try {
-            if (entrada.documentoProveedor === "") {
-                return alert("Debes buscar el documento del proveedor")
-            }
-            const { data } = await axios.get("/api/proveedores/" + entrada.documentoProveedor);
-            console.log(data);
-            if (!data) {
-                return alert("No existe el proveedor");
-            }
-            setEntrada({
-                numeroDocumento: entrada.numeroDocumento, fechaRegistro: entrada.fechaRegistro,
-                usuarioRegistro: entrada.usuarioRegistro, documentoProveedor: data.numeroDocumento,
-                nombreProveedor: data.nombreCompleto, cantidadProductos: entrada.cantidadProductos,
-                montoTotal: entrada.montoTotal, listaDetalle: entrada.listaDetalle
-            })
-
-        } catch (error) {
-            console.log(error);
-
-        }
-    }
+    };
     const limpiarProducto = (e) => {
         e.preventDefault();
         try {
@@ -146,26 +126,39 @@ function EntradasForm() {
                 descripcionProducto: "", categoriaProducto: "",
                 precioCompra: "", precioVenta: "",
                 cantidad: 0, subTotal: ""
-            })
+            });
         } catch (error) {
             console.log(error);
         }
 
-    }
+    };
     const limpiarProveedor = (e) => {
         e.preventDefault();
         try {
             setEntrada({
-                numeroDocumento: entrada.numeroDocumento, fechaRegistro: entrada.fechaRegistro,
+                numeroDocumento: "", fechaRegistro: "",
                 usuarioRegistro: entrada.usuarioRegistro, documentoProveedor: "",
                 nombreProveedor: "", cantidadProductos: entrada.cantidadProductos,
                 montoTotal: entrada.montoTotal, listaDetalle: entrada.listaDetalle
-            })
+            });
         } catch (error) {
             console.log(error);
         }
 
-    }
+    };
+    const handleSelect = (e) => {
+        e.preventDefault();
+        if (e.target.value !== "0") {
+            const { numeroDocumento, nombreCompleto } = proveedores.find(proveedor => proveedor.numeroDocumento === e.target.value);
+            setEntrada({
+                numeroDocumento: entrada.numeroDocumento, fechaRegistro: entrada.fechaRegistro,
+                usuarioRegistro: entrada.usuarioRegistro, documentoProveedor: numeroDocumento,
+                nombreProveedor: nombreCompleto, cantidadProductos: entrada.cantidadProductos,
+                montoTotal: entrada.montoTotal, listaDetalle: entrada.listaDetalle
+            });
+        }
+
+    };
     return (
 
         <div className="ml-60">
@@ -184,20 +177,17 @@ function EntradasForm() {
                                 value={entrada.fechaRegistro} />
                         </div>
                         <div>
-                            <label htmlFor="documentoProveedor" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"> Documento Proveedor</label>
-                            <input type="number" name="documentoProveedor" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required disabled={entrada.nombreProveedor !== "" ? true : false} onChange={handleChange}
-                                value={entrada.documentoProveedor} />
-                        </div>
-                        <div>
-                            <label htmlFor="nombreProveedor" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Proveedor</label>
-                            <input type="text" name="nombreProveedor" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" disabled onChange={handleChange}
-                                value={entrada.nombreProveedor} />
+                            <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Documento Proveedor</label>
+                            <select id="countries" name="documentoProveedor" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" onChange={handleSelect}>
+                                <option value={0}>Elige un proveedor
+                                </option>
+                                {
+                                    proveedores.map((proveedor) => (
+                                        <option value={proveedor.numeroDocumento} key={proveedor.idProveedor}>{proveedor.nombreCompleto}</option>
 
+                                    ))}
+                            </select>
                         </div>
-                        <button type="button" className=" w-min h-min self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={buscarProveedor}><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
-                            <path fillRule="evenodd" d="M10.5 3.75a6.75 6.75 0 100 13.5 6.75 6.75 0 000-13.5zM2.25 10.5a8.25 8.25 0 1114.59 5.28l4.69 4.69a.75.75 0 11-1.06 1.06l-4.69-4.69A8.25 8.25 0 012.25 10.5z" clipRule="evenodd" />
-                        </svg>
-                        </button>
                         <button type="button" className="w-min h-min self-end text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800" onClick={limpiarProveedor}>
                             <svg version={1.0} xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" viewBox="0 0 256.000000 256.000000" preserveAspectRatio="xMidYMid meet">
                                 <g transform="translate(0.000000,256.000000) scale(0.100000,-0.100000)" fill="#c8d8fa" stroke="none">
@@ -304,7 +294,7 @@ l-403 0 -505 505 -505 505 -162 -162z" />
         </div>
 
 
-    )
+    );
 }
 
-export default EntradasForm
+export default EntradasForm;

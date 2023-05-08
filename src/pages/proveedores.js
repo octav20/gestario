@@ -1,15 +1,22 @@
-import axios from 'axios'
-import Layout from 'components/Layout'
-import ProveedoresList from 'components/ProveedoresList'
-import ProveedorForm from 'components/ProveedorForm'
-import React, { useState } from 'react'
+import axios from 'axios';
+import Layout from 'components/Layout';
+import ProveedoresList from 'components/ProveedoresList';
+import ProveedorForm from 'components/ProveedorForm';
+import React, { useState } from 'react';
 function Proveedores({ data }) {
-    const [proveedores, setProveedores] = useState(data)
+    const [proveedores, setProveedores] = useState(data);
+    const handleSubmitProveedor = (proveedor) => {
+
+        const provee = [...proveedores];
+        provee.push({ numeroDocumento: proveedor.numeroDocumento, nombreCompleto: proveedor.nombreCompleto });
+        setProveedores(provee);
+
+    };
     // TODO: Arreglar el problema cuando se agrega otro proveedor, probablemente tenga que usar useContext
     return (
         <Layout>
             <div className='flex flex-row justify-between '>
-                <ProveedorForm proveedores={proveedores} />
+                <ProveedorForm handleSubmitProveedor={handleSubmitProveedor} proveedores={proveedores} />
                 <div className="relative overflow-x-auto shadow-md sm:rounded-lg mt-1">
                     <table className="w-min text-sm text-left text-gray-500 dark:text-gray-400">
                         <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -30,10 +37,10 @@ function Proveedores({ data }) {
                 </div>
             </div>
         </Layout>
-    )
+    );
 }
 export const getServerSideProps = async (context) => {
-    const reqUrl = context.req.headers["referer"]
+    const reqUrl = context.req.headers["referer"];
     const url = new URL(reqUrl);
     const { data } = await axios.get(
         `${url.origin}/api/proveedores`
@@ -45,4 +52,4 @@ export const getServerSideProps = async (context) => {
     };
 };
 
-export default Proveedores
+export default Proveedores;
