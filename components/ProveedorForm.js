@@ -18,7 +18,7 @@ function ProveedorForm({ proveedores, handleSubmitProveedor }) {
         e.preventDefault();
         try {
             await axios.post("/api/proveedores/", proveedor);
-            proveedores.push(proveedor);
+            // proveedores.push(proveedor);
             handleSubmitProveedor(proveedor);
             alert("Proveedor Agregado");
         }
